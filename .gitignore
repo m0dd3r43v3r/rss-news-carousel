@@ -1,1 +1,33 @@
-node_modules
+# Dependencies
+/node_modules
+
+# Development
+.git
+.github
+.gitignore
+.DS_Store
+Thumbs.db
+
+# Build process
+.editorconfig
+.eslintrc
+.prettierrc
+webpack.config.js
+package-lock.json
+update-checker-setup.sh
+
+# IDE specific files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+/tests
+phpunit.xml
+.phpunit.result.cache
+
+# Temporary files
+*.log
+*.tmp
+.cache
