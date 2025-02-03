@@ -1,1 +1,2 @@
-# rss-new-carousel
+# rss-news-carousel
+ 

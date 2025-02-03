@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "rss-news-carousel/news-carousel",
+  "version": "1.0.0",
+  "title": "RSS News Carousel",
+  "category": "widgets",
+  "icon": "rss",
+  "description": "Display RSS feed items in a carousel",
+  "attributes": {
+    "feedUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "showDots": {
+      "type": "boolean",
+      "default": true
+    },
+    "showArrows": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false
+  },
+  "textdomain": "rss-news-carousel",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
