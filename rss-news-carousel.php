@@ -1,13 +1,20 @@
 <?php
 /**
  * Plugin Name: RSS News Carousel
+ * Plugin URI: https://github.com/m0dd3r43v3r/rss-news-carousel
  * Description: Display RSS feed items in a beautiful carousel block
  * Version: 1.0.0
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
  * Author: Your Name
+ * Author URI: YOUR-WEBSITE-URL
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: rss-news-carousel
- * GitHub Plugin URI: YOUR-USERNAME/rss-news-carousel
+ * Domain Path: /languages
+ * GitHub Plugin URI: m0dd3r43v3r/rss-news-carousel
+ * Primary Branch: main
+ * Release Asset: true
  */
 
 if (!defined('ABSPATH')) {
