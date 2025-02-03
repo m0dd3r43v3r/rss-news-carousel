@@ -5,9 +5,13 @@
 }
 
 .rss-news-carousel {
-    position: relative;
     max-width: 100%;
+    margin: 0 auto;
+    position: relative;
     background: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .carousel-container {
@@ -60,28 +64,59 @@
 
 .tns-nav {
     text-align: center;
-    margin: 1.5em 0 0;
+    margin: 1rem 0;
 }
 
 .tns-nav button {
-    width: 8px;
-    height: 8px;
-    padding: 0;
-    margin: 0 4px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: #ccc;
-    border: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    margin: 0 4px;
+    background: #d4d4d4;
+    border: none;
+    padding: 0;
 }
 
 .tns-nav button.tns-nav-active {
-    background: #2271b1;
-    transform: scale(1.2);
+    background: #203731; /* Packers green */
 }
 
 .tns-controls {
-    display: none; /* Hide arrows as they're not in the example */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.tns-controls button {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #203731;
+    transition: background-color 0.3s;
+}
+
+.tns-controls button:hover {
+    background: #fff;
+}
+
+.tns-controls button[data-controls="prev"] {
+    left: 1rem;
+}
+
+.tns-controls button[data-controls="next"] {
+    right: 1rem;
 }
 
 /* Fix for slider initialization */
@@ -124,4 +159,63 @@
 /* Hide non-active slides */
 .tns-slide-active ~ div {
     opacity: 0;
+}
+
+.rss-news-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.rss-news-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.rss-news-content {
+    padding: 1.5rem;
+    background: #fff;
+    flex-grow: 1;
+}
+
+.rss-news-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+.rss-news-description {
+    font-size: 1rem;
+    color: #4a4a4a;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.rss-news-link {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.rss-news-link:hover .rss-news-title {
+    color: #203731; /* Packers green */
+}
+
+@media (max-width: 768px) {
+    .rss-news-image {
+        height: 300px;
+    }
+    
+    .rss-news-content {
+        padding: 1rem;
+    }
+    
+    .rss-news-title {
+        font-size: 1.25rem;
+    }
 } 

@@ -60,6 +60,14 @@ function rss_news_carousel_enqueue_assets() {
         true
     );
 
+    // Add custom styles
+    wp_enqueue_style(
+        'rss-news-carousel-style',
+        plugins_url('src/style.css', __FILE__),
+        array(),
+        '1.0.0'
+    );
+
     // Add the frontend script
     wp_enqueue_script(
         'rss-news-carousel-frontend',
@@ -79,16 +87,29 @@ function rss_news_carousel_fetch_items($feed_url) {
         return array();
     }
     
-    $maxitems = $rss->get_item_quantity(5);
+    $maxitems = $rss->get_item_quantity(10);
     $items = $rss->get_items(0, $maxitems);
     
     $feed_items = array();
     foreach ($items as $item) {
+        // Get the image URL from media:content or enclosure
+        $image_url = '';
+        $media_content = $item->get_item_tags('http://search.yahoo.com/mrss/', 'content');
+        if ($media_content && isset($media_content[0]['attribs']['']['url'])) {
+            $image_url = $media_content[0]['attribs']['']['url'];
+        } else {
+            $enclosure = $item->get_enclosure();
+            if ($enclosure && $enclosure->get_type() === 'image/jpeg') {
+                $image_url = $enclosure->get_link();
+            }
+        }
+
         $feed_items[] = array(
             'title' => html_entity_decode($item->get_title(), ENT_QUOTES, 'UTF-8'),
             'link' => $item->get_permalink(),
             'date' => $item->get_date('U'),
             'description' => html_entity_decode(wp_trim_words($item->get_description(), 20), ENT_QUOTES, 'UTF-8'),
+            'image_url' => $image_url
         );
     }
     

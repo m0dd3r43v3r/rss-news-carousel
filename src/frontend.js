@@ -1,69 +1,64 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const carousels = document.querySelectorAll('.rss-news-carousel');
+    const carousels = document.querySelectorAll('.wp-block-rss-news-carousel');
     
-    carousels.forEach(carousel => {
+    carousels.forEach(function(carousel) {
         const feedUrl = carousel.dataset.feedUrl;
-        const showDots = carousel.dataset.showDots === 'true';
-        const container = carousel.querySelector('.carousel-container');
-
+        
         if (!feedUrl) return;
-
+        
         // Fetch RSS items
         fetch(`/wp-json/rss-news-carousel/v1/feed?feed_url=${encodeURIComponent(feedUrl)}`)
             .then(response => response.json())
             .then(items => {
-                if (!items || !items.length) {
-                    container.innerHTML = '<p class="error">No items found in feed</p>';
-                    return;
-                }
-
-                // Clear existing content
-                container.innerHTML = '';
-
-                // Create carousel items
-                items.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'carousel-item';
-                    itemDiv.innerHTML = `
-                        <h3>${item.title}</h3>
-                        <p>${item.description}</p>
-                        <a href="${item.link}" target="_blank" rel="noopener noreferrer">Read More</a>
-                    `;
-                    container.appendChild(itemDiv);
+                // Create carousel HTML
+                const carouselHtml = items.map(item => `
+                    <div class="rss-news-item">
+                        <a href="${item.link}" class="rss-news-link" target="_blank" rel="noopener noreferrer">
+                            ${item.image_url ? `
+                                <img 
+                                    src="${item.image_url}" 
+                                    alt="${item.title}"
+                                    class="rss-news-image"
+                                    loading="lazy"
+                                />
+                            ` : ''}
+                            <div class="rss-news-content">
+                                <h3 class="rss-news-title">${item.title}</h3>
+                                <p class="rss-news-description">${item.description}</p>
+                            </div>
+                        </a>
+                    </div>
+                `).join('');
+                
+                // Create carousel container
+                const container = document.createElement('div');
+                container.className = 'rss-news-carousel';
+                container.innerHTML = carouselHtml;
+                carousel.appendChild(container);
+                
+                // Initialize tiny-slider
+                const slider = tns({
+                    container: container,
+                    items: 1,
+                    slideBy: 1,
+                    autoplay: true,
+                    autoplayTimeout: 5000,
+                    autoplayButtonOutput: false,
+                    controls: true,
+                    controlsText: ['←', '→'],
+                    nav: true,
+                    navPosition: 'bottom',
+                    mouseDrag: true,
+                    speed: 400,
+                    mode: 'carousel',
+                    preventScrollOnTouch: 'auto',
+                    animateIn: 'fadeIn',
+                    animateOut: 'fadeOut'
                 });
-
-                // Initialize Tiny Slider
-                try {
-                    const slider = tns({
-                        container: container,
-                        items: 1,
-                        slideBy: 1,
-                        autoplay: false,
-                        controls: false, // Hide arrow controls
-                        nav: showDots,
-                        loop: true,
-                        speed: 400,
-                        mode: 'carousel',
-                        mouseDrag: true,
-                        preventScrollOnTouch: 'auto',
-                        preventActionWhenRunning: true,
-                        animateIn: 'tns-fadeIn',
-                        animateOut: 'tns-fadeOut',
-                        animateNormal: 'tns-normal',
-                    });
-
-                    // Force refresh of the slider
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('resize'));
-                    }, 100);
-                } catch (error) {
-                    console.error('Error initializing slider:', error);
-                    container.innerHTML = '<p class="error">Error initializing carousel</p>';
-                }
             })
             .catch(error => {
                 console.error('Error fetching RSS feed:', error);
-                container.innerHTML = '<p class="error">Failed to load RSS feed</p>';
+                carousel.innerHTML = '<p>Error loading RSS feed</p>';
             });
     });
 }); 
