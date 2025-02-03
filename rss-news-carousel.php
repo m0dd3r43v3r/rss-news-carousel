@@ -2,8 +2,8 @@
 /**
  * Plugin Name: RSS News Carousel
  * Plugin URI: https://github.com/m0dd3r43v3r/rss-news-carousel
- * Description: Display RSS feed items in a beautiful carousel block
- * Version: 1.0.0
+ * Description: Display RSS feed items in a beautiful carousel block with images
+ * Version: 1.0.1
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Your Name
@@ -65,7 +65,7 @@ function rss_news_carousel_enqueue_assets() {
         'rss-news-carousel-style',
         plugins_url('src/style.css', __FILE__),
         array(),
-        '1.0.0'
+        '1.0.1'
     );
 
     // Add the frontend script
@@ -73,7 +73,7 @@ function rss_news_carousel_enqueue_assets() {
         'rss-news-carousel-frontend',
         plugins_url('src/frontend.js', __FILE__),
         array('tiny-slider'),
-        '1.0.0',
+        '1.0.1',
         true
     );
 }
@@ -104,12 +104,20 @@ function rss_news_carousel_fetch_items($feed_url) {
             }
         }
 
+        // Get the full content if available
+        $content = $item->get_content();
+        $description = $item->get_description();
+        
+        // Use content if available, fallback to description
+        $display_content = !empty($content) ? $content : $description;
+        
         $feed_items[] = array(
             'title' => html_entity_decode($item->get_title(), ENT_QUOTES, 'UTF-8'),
             'link' => $item->get_permalink(),
             'date' => $item->get_date('U'),
-            'description' => html_entity_decode(wp_trim_words($item->get_description(), 20), ENT_QUOTES, 'UTF-8'),
-            'image_url' => $image_url
+            'description' => html_entity_decode(wp_trim_words($display_content, 20), ENT_QUOTES, 'UTF-8'),
+            'image_url' => $image_url,
+            'pubDate' => $item->get_date('F j, Y')
         );
     }
     

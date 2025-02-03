@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 />
                             ` : ''}
                             <div class="rss-news-content">
+                                <div class="rss-news-meta">
+                                    <span class="rss-news-date">${item.pubDate}</span>
+                                </div>
                                 <h3 class="rss-news-title">${item.title}</h3>
                                 <p class="rss-news-description">${item.description}</p>
                             </div>
@@ -53,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     mode: 'carousel',
                     preventScrollOnTouch: 'auto',
                     animateIn: 'fadeIn',
-                    animateOut: 'fadeOut'
+                    animateOut: 'fadeOut',
+                    loop: true
                 });
             })
             .catch(error => {
