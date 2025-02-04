@@ -3,7 +3,7 @@
  * Plugin Name: RSS News Carousel
  * Plugin URI: https://github.com/m0dd3r43v3r/rss-news-carousel
  * Description: Display RSS feed items in a beautiful carousel block with images
- * Version: 1.0.1
+ * Version: 1.0.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Your Name
@@ -15,6 +15,7 @@
  * GitHub Plugin URI: m0dd3r43v3r/rss-news-carousel
  * Primary Branch: main
  * Release Asset: true
+ * Release Asset Path: rss-news-carousel-v{version}.zip
  */
 
 if (!defined('ABSPATH')) {
@@ -29,13 +30,19 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 function rss_news_carousel_setup_update_checker() {
     if (class_exists('YahnisElsts\\PluginUpdateChecker\\v5\\PucFactory')) {
         $myUpdateChecker = PucFactory::buildUpdateChecker(
-            'https://github.com/m0dd3r43v3r/rss-news-carousel/',
+            'https://github.com/m0dd3r43v3r/rss-news-carousel',
             __FILE__,
             'rss-news-carousel'
         );
 
         // Set the branch that contains the stable release
         $myUpdateChecker->setBranch('main');
+        
+        // Optional: Enable debug mode to see what's going on
+        $myUpdateChecker->setDebugMode(true);
+        
+        // Use release assets instead of source code
+        $myUpdateChecker->getVcsApi()->enableReleaseAssets();
     }
 }
 add_action('init', 'rss_news_carousel_setup_update_checker');

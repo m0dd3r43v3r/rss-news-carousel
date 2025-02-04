@@ -31,3 +31,6 @@ phpunit.xml
 *.log
 *.tmp
 .cache
+
+#Release
+*.zip
