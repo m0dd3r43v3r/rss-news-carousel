@@ -67,6 +67,10 @@
         "paddingRight": {
             "type": "number",
             "default": 24
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "#f8f9fa"
         }
     },
     "supports": {

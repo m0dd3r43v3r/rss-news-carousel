@@ -14,7 +14,7 @@ export default function Edit({ attributes, setAttributes }) {
     const { 
         feedUrl, showDots, showArrows, dotColor, activeDotColor, arrowColor, 
         dotSize, arrowSize, arrowStyle, borderRadius, imageRadius,
-        paddingTop, paddingBottom, paddingLeft, paddingRight 
+        paddingTop, paddingBottom, paddingLeft, paddingRight, backgroundColor 
     } = attributes;
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -72,6 +72,16 @@ export default function Edit({ attributes, setAttributes }) {
 
     // Add custom styles for navigation colors and sizes
     const customStyles = `
+        .wp-block-rss-news-carousel {
+            background: ${backgroundColor};
+        }
+        .wp-block-rss-news-carousel .rss-news-link {
+            background: ${backgroundColor};
+        }
+        .wp-block-rss-news-carousel .rss-news-content {
+            background: ${backgroundColor};
+            padding: ${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px;
+        }
         .wp-block-rss-news-carousel .slick-dots li button:before {
             color: ${dotColor};
             font-size: ${dotSize}px;
@@ -117,9 +127,6 @@ export default function Edit({ attributes, setAttributes }) {
         .wp-block-rss-news-carousel .rss-news-image-placeholder {
             border-radius: ${imageRadius}px;
             overflow: hidden;
-        }
-        .wp-block-rss-news-carousel .rss-news-content {
-            padding: ${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px;
         }
     `;
 
@@ -194,6 +201,12 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                 </PanelBody>
                 <PanelBody title={__('Appearance Settings', 'rss-news-carousel')}>
+                    <TextControl
+                        label={__('Background Color', 'rss-news-carousel')}
+                        value={backgroundColor}
+                        onChange={(value) => setAttributes({ backgroundColor: value })}
+                        help={__('Enter a hex color code (e.g. #f8f9fa)', 'rss-news-carousel')}
+                    />
                     <RangeControl
                         label={__('Block Border Radius', 'rss-news-carousel')}
                         value={borderRadius}
