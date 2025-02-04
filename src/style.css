@@ -5,80 +5,113 @@
 }
 
 .rss-news-carousel {
-    max-width: 100%;
-    margin: 0 auto;
     position: relative;
     background: #fff;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.rss-news-item {
+    display: none;
+    position: relative;
+    height: 100%;
+}
+
+.rss-news-item.active {
+    display: block;
+}
+
+.rss-news-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
     overflow: hidden;
 }
 
-.carousel-container {
-    position: relative;
+.rss-news-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.carousel-item {
+.rss-news-image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+}
+
+.rss-news-content {
+    padding: 1.5rem;
     background: #fff;
-    padding: 2em;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 0.5em;
-    text-align: left;
-    opacity: 1;
-    transition: opacity 0.4s ease;
 }
 
-.carousel-item h3 {
-    margin: 0 0 1em;
-    font-size: 1.5em;
-    color: #333;
-    line-height: 1.3;
+.rss-news-meta {
+    margin-bottom: 0.75rem;
 }
 
-.carousel-item p {
-    margin: 0 0 1.5em;
+.rss-news-date {
+    font-size: 0.875rem;
     color: #666;
-    line-height: 1.6;
-}
-
-.carousel-item a {
-    display: inline-block;
-    padding: 0.7em 1.2em;
-    background: #2271b1;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background 0.3s ease;
     font-weight: 500;
 }
 
-.carousel-item a:hover {
-    background: #135e96;
+.rss-news-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: #1a1a1a;
+    line-height: 1.2;
 }
 
-/* Tiny Slider Navigation Styles */
+.rss-news-description {
+    font-size: 1rem;
+    color: #4a4a4a;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.rss-news-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    height: 100%;
+}
+
+.rss-news-link:hover .rss-news-title {
+    color: #203731; /* Packers green */
+}
+
+/* Navigation */
 .tns-outer {
     position: relative;
 }
 
 .tns-nav {
-    text-align: center;
-    margin: 1rem 0;
     position: absolute;
     bottom: 1rem;
-    width: 100%;
+    left: 0;
+    right: 0;
+    text-align: center;
     z-index: 2;
 }
 
 .tns-nav button {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    padding: 0;
     margin: 0 4px;
+    border-radius: 50%;
     background: rgba(255, 255, 255, 0.5);
     border: none;
-    padding: 0;
     transition: all 0.3s ease;
 }
 
@@ -90,26 +123,27 @@
 .tns-controls {
     position: absolute;
     top: 50%;
+    left: 0;
+    right: 0;
     transform: translateY(-50%);
-    width: 100%;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
 }
 
 .tns-controls button {
     position: absolute;
     background: rgba(255, 255, 255, 0.8);
-    border: none;
+    color: #203731;
     width: 40px;
     height: 40px;
+    border: none;
     border-radius: 50%;
-    cursor: pointer;
-    pointer-events: auto;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    color: #203731;
+    cursor: pointer;
+    pointer-events: auto;
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -127,120 +161,32 @@
     right: 1rem;
 }
 
-/* Fix for slider initialization */
-.tns-slider {
-    display: flex;
-}
-
-.tns-horizontal.tns-subpixel {
-    white-space: normal !important;
-}
-
-/* Loading and error states */
-.error {
-    color: #dc3232;
-    padding: 1em;
+/* Error state */
+.rss-news-error {
+    padding: 2rem;
     text-align: center;
+    color: #dc3232;
     background: #fff;
+    margin: 0;
 }
 
-/* Fade animations */
-.tns-fadeIn {
-    opacity: 1;
-    transition: opacity 0.4s ease;
-}
-
-.tns-fadeOut {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.tns-normal {
-    opacity: 1;
-}
-
-/* Active slide styling */
-.tns-slide-active {
-    opacity: 1;
-}
-
-/* Hide non-active slides */
-.tns-slide-active ~ div {
-    opacity: 0;
-}
-
-.rss-news-item {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.rss-news-image {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-}
-
-.rss-news-content {
-    padding: 1.5rem;
-    background: #fff;
-    flex-grow: 1;
-}
-
-.rss-news-meta {
-    margin-bottom: 0.75rem;
-}
-
-.rss-news-date {
-    font-size: 0.875rem;
-    color: #666;
-    font-weight: 500;
-}
-
-.rss-news-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #1a1a1a;
-    line-height: 1.2;
-}
-
-.rss-news-description {
-    font-size: 1rem;
-    color: #4a4a4a;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-}
-
-.rss-news-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
-}
-
-.rss-news-link:hover .rss-news-title {
-    color: #203731; /* Packers green */
-}
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .rss-news-image {
-        height: 300px;
+    .rss-news-title {
+        font-size: 1.25rem;
     }
     
     .rss-news-content {
         padding: 1rem;
     }
     
-    .rss-news-title {
-        font-size: 1.25rem;
-    }
-
     .tns-controls button {
         width: 32px;
         height: 32px;
         font-size: 1rem;
+    }
+    
+    .tns-nav {
+        bottom: 0.5rem;
     }
 } 

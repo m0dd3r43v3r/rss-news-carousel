@@ -12,25 +12,27 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(items => {
                 // Create carousel HTML
                 const carouselHtml = items.map(item => `
-                    <div class="rss-news-item">
+                    <article class="rss-news-item">
                         <a href="${item.link}" class="rss-news-link" target="_blank" rel="noopener noreferrer">
-                            ${item.image_url ? `
-                                <img 
-                                    src="${item.image_url}" 
-                                    alt="${item.title}"
-                                    class="rss-news-image"
-                                    loading="lazy"
-                                />
-                            ` : ''}
+                            <div class="rss-news-image-wrapper">
+                                ${item.image_url ? `
+                                    <img 
+                                        src="${item.image_url}" 
+                                        alt="${item.title}"
+                                        class="rss-news-image"
+                                        loading="lazy"
+                                    />
+                                ` : '<div class="rss-news-image-placeholder"></div>'}
+                            </div>
                             <div class="rss-news-content">
                                 <div class="rss-news-meta">
-                                    <span class="rss-news-date">${item.pubDate}</span>
+                                    <time class="rss-news-date" datetime="${item.date}">${item.pubDate}</time>
                                 </div>
-                                <h3 class="rss-news-title">${item.title}</h3>
-                                <p class="rss-news-description">${item.description}</p>
+                                <h2 class="rss-news-title">${item.title}</h2>
+                                <div class="rss-news-description">${item.description}</div>
                             </div>
                         </a>
-                    </div>
+                    </article>
                 `).join('');
                 
                 // Create carousel container
@@ -53,16 +55,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     navPosition: 'bottom',
                     mouseDrag: true,
                     speed: 400,
-                    mode: 'carousel',
+                    mode: 'gallery',
                     preventScrollOnTouch: 'auto',
                     animateIn: 'fadeIn',
-                    animateOut: 'fadeOut',
-                    loop: true
+                    animateOut: 'fadeOut'
+                });
+
+                // Add active class to visible slide
+                slider.events.on('transitionEnd', function() {
+                    const slides = container.querySelectorAll('.rss-news-item');
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    const activeSlide = slides[slider.getInfo().displayIndex - 1];
+                    if (activeSlide) {
+                        activeSlide.classList.add('active');
+                    }
                 });
             })
             .catch(error => {
                 console.error('Error fetching RSS feed:', error);
-                carousel.innerHTML = '<p>Error loading RSS feed</p>';
+                carousel.innerHTML = '<p class="rss-news-error">Error loading RSS feed</p>';
             });
     });
 }); 
