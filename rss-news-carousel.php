@@ -3,7 +3,7 @@
  * Plugin Name: RSS News Carousel
  * Plugin URI: https://github.com/m0dd3r43v3r/rss-news-carousel
  * Description: Display RSS feed items in a beautiful carousel block with images
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Your Name
@@ -18,71 +18,127 @@
  * Release Asset Path: rss-news-carousel-v{version}.zip
  */
 
+// Prevent direct file access
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Include Plugin Update Checker
-require_once plugin_dir_path(__FILE__) . 'plugin-update-checker/plugin-update-checker.php';
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-// Setup the update checker
-function rss_news_carousel_setup_update_checker() {
-    if (class_exists('YahnisElsts\\PluginUpdateChecker\\v5\\PucFactory')) {
-        $myUpdateChecker = PucFactory::buildUpdateChecker(
-            'https://github.com/m0dd3r43v3r/rss-news-carousel',
-            __FILE__,
-            'rss-news-carousel'
-        );
-
-        // Set the branch that contains the stable release
-        $myUpdateChecker->setBranch('main');
-        
-        // Optional: Enable debug mode to see what's going on
-        $myUpdateChecker->setDebugMode(true);
-        
-        // Use release assets instead of source code
-        $myUpdateChecker->getVcsApi()->enableReleaseAssets();
+// Error handling function
+function rss_news_carousel_log_error($message, $error = null) {
+    if (WP_DEBUG) {
+        $error_message = '[RSS News Carousel] ' . $message;
+        if ($error instanceof Exception) {
+            $error_message .= ' Error: ' . $error->getMessage();
+            $error_message .= ' in ' . $error->getFile() . ' on line ' . $error->getLine();
+        }
+        error_log($error_message);
     }
 }
-add_action('init', 'rss_news_carousel_setup_update_checker');
 
+// Define plugin constants
+if (!defined('RSS_NEWS_CAROUSEL_VERSION')) {
+    define('RSS_NEWS_CAROUSEL_VERSION', '1.0.2');
+}
+if (!defined('RSS_NEWS_CAROUSEL_PLUGIN_DIR')) {
+    define('RSS_NEWS_CAROUSEL_PLUGIN_DIR', plugin_dir_path(__FILE__));
+}
+if (!defined('RSS_NEWS_CAROUSEL_PLUGIN_URL')) {
+    define('RSS_NEWS_CAROUSEL_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
+
+// Include Plugin Update Checker
+$updateCheckerFile = RSS_NEWS_CAROUSEL_PLUGIN_DIR . 'plugin-update-checker/plugin-update-checker.php';
+if (file_exists($updateCheckerFile)) {
+    try {
+        require_once $updateCheckerFile;
+        
+        // Setup the update checker
+        function rss_news_carousel_setup_update_checker() {
+            try {
+                if (!class_exists('YahnisElsts\\PluginUpdateChecker\\v5\\PucFactory')) {
+                    rss_news_carousel_log_error('PucFactory class not found');
+                    return;
+                }
+
+                $myUpdateChecker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+                    'https://github.com/m0dd3r43v3r/rss-news-carousel',
+                    __FILE__,
+                    'rss-news-carousel'
+                );
+                
+                $myUpdateChecker->setBranch('main');
+                $myUpdateChecker->setDebugMode(true);
+                
+                rss_news_carousel_log_error('Update checker initialized successfully');
+            } catch (Exception $e) {
+                rss_news_carousel_log_error('Failed to initialize update checker', $e);
+            }
+        }
+        add_action('init', 'rss_news_carousel_setup_update_checker');
+    } catch (Exception $e) {
+        rss_news_carousel_log_error('Failed to load update checker file', $e);
+    }
+} else {
+    rss_news_carousel_log_error('Update checker file not found at: ' . $updateCheckerFile);
+}
+
+// Register block
 function rss_news_carousel_register_block() {
-    register_block_type(__DIR__ . '/build');
+    try {
+        if (!file_exists(__DIR__ . '/build')) {
+            rss_news_carousel_log_error('Build directory not found');
+            return;
+        }
+        register_block_type(__DIR__ . '/build');
+    } catch (Exception $e) {
+        rss_news_carousel_log_error('Failed to register block', $e);
+    }
 }
 add_action('init', 'rss_news_carousel_register_block');
 
 // Enqueue frontend assets
 function rss_news_carousel_enqueue_assets() {
-    wp_enqueue_style(
-        'tiny-slider',
-        'https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css'
-    );
-    
-    wp_enqueue_script(
-        'tiny-slider',
-        'https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js',
-        array(),
-        '2.9.4',
-        true
-    );
+    try {
+        wp_enqueue_style(
+            'tiny-slider',
+            'https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css'
+        );
+        
+        wp_enqueue_script(
+            'tiny-slider',
+            'https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js',
+            array(),
+            '2.9.4',
+            true
+        );
 
-    // Add custom styles
-    wp_enqueue_style(
-        'rss-news-carousel-style',
-        plugins_url('src/style.css', __FILE__),
-        array(),
-        '1.0.1'
-    );
+        $style_file = RSS_NEWS_CAROUSEL_PLUGIN_DIR . 'src/style.css';
+        $script_file = RSS_NEWS_CAROUSEL_PLUGIN_DIR . 'src/frontend.js';
 
-    // Add the frontend script
-    wp_enqueue_script(
-        'rss-news-carousel-frontend',
-        plugins_url('src/frontend.js', __FILE__),
-        array('tiny-slider'),
-        '1.0.1',
-        true
-    );
+        if (!file_exists($style_file)) {
+            rss_news_carousel_log_error('Style file not found at: ' . $style_file);
+        }
+        if (!file_exists($script_file)) {
+            rss_news_carousel_log_error('Script file not found at: ' . $script_file);
+        }
+
+        wp_enqueue_style(
+            'rss-news-carousel-style',
+            plugins_url('src/style.css', __FILE__),
+            array(),
+            RSS_NEWS_CAROUSEL_VERSION
+        );
+
+        wp_enqueue_script(
+            'rss-news-carousel-frontend',
+            plugins_url('src/frontend.js', __FILE__),
+            array('tiny-slider'),
+            RSS_NEWS_CAROUSEL_VERSION,
+            true
+        );
+    } catch (Exception $e) {
+        rss_news_carousel_log_error('Failed to enqueue assets', $e);
+    }
 }
 add_action('enqueue_block_assets', 'rss_news_carousel_enqueue_assets');
 
