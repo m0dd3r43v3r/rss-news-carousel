@@ -3,13 +3,14 @@
 ## [1.0.2] - 2025-02-03
 
 ### Added
-- 
+- Better error logging for troubleshooting
 
 ### Changed
-- 
+- Simplified update checker configuration
 
 ### Fixed
-- 
+- Critical error caused by incompatible debug mode setting
+- Plugin activation issues
 
 All notable changes to the RSS News Carousel plugin will be documented in this file.
 

@@ -66,8 +66,8 @@ if (file_exists($updateCheckerFile)) {
                     'rss-news-carousel'
                 );
                 
+                // Set the branch that contains the stable release
                 $myUpdateChecker->setBranch('main');
-                $myUpdateChecker->setDebugMode(true);
                 
                 rss_news_carousel_log_error('Update checker initialized successfully');
             } catch (Exception $e) {
