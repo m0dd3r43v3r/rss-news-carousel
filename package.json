@@ -1,6 +1,6 @@
 {
   "name": "rss-news-carousel",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "WordPress block for displaying RSS feed items in a carousel",
   "scripts": {
     "build": "wp-scripts build",
