@@ -74,6 +74,9 @@ export default function Edit({ attributes, setAttributes }) {
     const customStyles = `
         .wp-block-rss-news-carousel {
             background: ${backgroundColor};
+            border-radius: ${borderRadius}px;
+            overflow: hidden;
+            padding-bottom: 0; /* Remove bottom padding */
         }
         .wp-block-rss-news-carousel .rss-news-link {
             background: ${backgroundColor};
@@ -81,6 +84,11 @@ export default function Edit({ attributes, setAttributes }) {
         .wp-block-rss-news-carousel .rss-news-content {
             background: ${backgroundColor};
             padding: ${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px;
+        }
+        .wp-block-rss-news-carousel .slick-dots {
+            bottom: 20px;
+            position: absolute;
+            z-index: 1;
         }
         .wp-block-rss-news-carousel .slick-dots li button:before {
             color: ${dotColor};
@@ -107,17 +115,18 @@ export default function Edit({ attributes, setAttributes }) {
         }
         .wp-block-rss-news-carousel .slick-prev,
         .wp-block-rss-news-carousel .slick-next {
-            top: auto;
-            bottom: -30px;
-            transform: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             width: ${arrowSize}px;
             height: ${arrowSize}px;
+            z-index: 1;
         }
         .wp-block-rss-news-carousel .slick-prev {
-            left: 20px;
+            left: 10px;
         }
         .wp-block-rss-news-carousel .slick-next {
-            right: 20px;
+            right: 10px;
         }
         .wp-block-rss-news-carousel .rss-news-item {
             border-radius: ${borderRadius}px;

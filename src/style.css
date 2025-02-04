@@ -1,6 +1,7 @@
 .wp-block-rss-news-carousel {
     max-width: 100%;
     margin: 0 auto;
+    overflow: hidden; /* Ensure background respects border radius */
 }
 
 .rss-news-carousel {
@@ -78,15 +79,19 @@
 /* Navigation container */
 .slick-slider {
     margin-bottom: 0;
+    position: relative;
 }
 
 .slick-dots {
-    bottom: 10px;
+    position: absolute;
+    bottom: 20px;
     padding: 0;
     height: 20px;
     display: flex !important;
     align-items: center;
     justify-content: center;
+    z-index: 1;
+    width: 100%;
 }
 
 .slick-dots li {
@@ -117,25 +122,21 @@
 /* Navigation arrows */
 .slick-prev,
 .slick-next {
-    top: auto;
-    bottom: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: 24px;
     height: 24px;
-    transform: none;
     background: none !important;
     z-index: 1;
 }
 
 .slick-prev {
-    left: auto;
-    right: 50%;
-    margin-right: 50px;
+    left: 10px;
 }
 
 .slick-next {
-    right: auto;
-    left: 50%;
-    margin-left: 50px;
+    right: 10px;
 }
 
 .slick-prev:before,
