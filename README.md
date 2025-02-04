@@ -27,7 +27,6 @@ RSS News Carousel is a modern WordPress plugin that allows you to display RSS fe
 - WordPress 5.8 or higher
 - PHP 7.4 or higher
 
-
 ## License
 
 This plugin is licensed under the GPL v2 or later.
