@@ -1,5 +1,435 @@
 # Changelog
 
+## [1.0.20] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.19] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.18] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.17] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.16] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.15] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.14] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.13] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.12] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.11] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.30] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.29] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.28] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.27] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.26] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.25] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.24] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.23] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.22] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.21] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.20] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.19] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.18] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.17] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.16] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.15] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.14] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.13] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.12] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.1.11] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.10] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.9] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.8] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.7] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.6] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.5] - 2025-02-03
+
+### Added
+- Comprehensive error logging and debugging
+- Image fallback handling for broken images
+- Loading state indicator
+
+### Changed
+- Improved RSS feed parsing and image extraction
+- Enhanced error handling and user feedback
+- Better initialization sequence
+
+### Fixed
+- Image display issues
+- Carousel initialization problems
+- Multiple items display issue
+- Feed loading and error handling
+
+## [1.0.4] - 2025-02-03
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- 
+
+## [1.0.3] - 2025-02-03
+
+### Added
+- "No Image Available" placeholder for items without images
+- Improved fade animations between slides
+
+### Changed
+- Enhanced slider configuration for single item display
+- Improved image handling and aspect ratio
+
+### Fixed
+- Multiple items showing simultaneously issue
+- Missing images display problem
+- Navigation controls visibility
+- Slide transition smoothness
+
 ## [1.0.2] - 2025-02-03
 
 ### Added

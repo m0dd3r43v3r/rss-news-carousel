@@ -73,6 +73,14 @@ if ($changelog -notmatch "\[\s*$newVersion\s*\]") {
     pause
 }
 
+# Run build process
+Write-Host "Running build process..."
+npm run build
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Build process failed"
+    exit 1
+}
+
 # Create a temporary directory for the release
 $releaseDir = "release-tmp"
 $pluginDir = "rss-news-carousel"
@@ -87,9 +95,7 @@ $filesToInclude = @(
     "README.md",
     "CHANGELOG.md",
     "plugin-update-checker",
-    "build",
-    "src/frontend.js",
-    "src/style.css"
+    "build"  # Only include build directory, not src
 )
 
 # Copy files to release directory

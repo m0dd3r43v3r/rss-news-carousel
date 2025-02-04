@@ -1,0 +1,142 @@
+/* Editor-specific styles */
+.wp-block-rss-news-carousel {
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+.rss-news-carousel-editor {
+    background: #f8f9fa;
+    position: relative;
+    padding-bottom: 40px; /* Space for navigation */
+}
+
+.rss-news-carousel-editor .rss-news-meta {
+    display: none;
+}
+
+.rss-news-carousel-editor .rss-news-link {
+    text-decoration: none !important;
+    pointer-events: none;
+}
+
+/* Image wrapper */
+.rss-news-carousel-editor .rss-news-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden;
+}
+
+.rss-news-carousel-editor .rss-news-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rss-news-carousel-editor .rss-news-content {
+    padding: 1.5rem 1.5rem 2.5rem;
+    background: #f8f9fa;
+}
+
+.rss-news-carousel-editor .rss-news-title {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    color: #1a1a1a;
+    font-weight: 700;
+}
+
+.rss-news-carousel-editor .rss-news-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #666;
+    margin: 0;
+}
+
+/* Override WordPress editor styles */
+.editor-styles-wrapper .rss-news-carousel-editor .rss-news-title {
+    margin: 0 0 0.75rem;
+    padding: 0;
+}
+
+.editor-styles-wrapper .rss-news-carousel-editor .rss-news-description {
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation container */
+.rss-news-carousel-editor .slick-slider {
+    margin-bottom: 0;
+    padding-bottom: 40px;
+}
+
+.rss-news-carousel-editor .slick-dots {
+    bottom: 0;
+    padding: 0;
+    height: 20px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.rss-news-carousel-editor .slick-dots li {
+    margin: 0 4px;
+    width: auto;
+    height: auto;
+}
+
+.rss-news-carousel-editor .slick-dots li button {
+    width: auto;
+    height: auto;
+    padding: 0;
+}
+
+.rss-news-carousel-editor .slick-dots li button:before {
+    font-family: 'slick';
+    font-size: 12px;
+    line-height: 20px;
+    position: relative;
+    text-align: center;
+}
+
+/* Navigation arrows */
+.rss-news-carousel-editor .slick-prev,
+.rss-news-carousel-editor .slick-next {
+    top: auto;
+    bottom: 0;
+    transform: none;
+    background: none !important;
+    z-index: 1;
+}
+
+.rss-news-carousel-editor .slick-prev {
+    left: 20px;
+}
+
+.rss-news-carousel-editor .slick-next {
+    right: 20px;
+}
+
+.rss-news-carousel-editor .slick-prev:before,
+.rss-news-carousel-editor .slick-next:before {
+    font-family: 'slick' !important;
+    opacity: 1;
+    line-height: 1;
+}
+
+.rss-news-carousel-editor .slick-prev:hover:before,
+.rss-news-carousel-editor .slick-next:hover:before {
+    opacity: 0.75;
+}
+
+.rss-news-carousel-color-setting {
+    margin-bottom: 24px;
+}
+
+.rss-news-carousel-color-setting label {
+    display: block;
+    margin-bottom: 8px;
+} 
