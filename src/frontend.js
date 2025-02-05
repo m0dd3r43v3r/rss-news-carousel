@@ -1,32 +1,10 @@
 console.log('RSS News Carousel: Frontend script loaded');
 
-function waitForTinySlider(maxAttempts = 10) {
-    let attempts = 0;
-    
-    function tryInit() {
-        console.log('RSS News Carousel: Attempting to initialize, attempt', attempts + 1);
-        
-        if (typeof tns !== 'undefined') {
-            initCarousel();
-            return;
-        }
-        
-        attempts++;
-        if (attempts < maxAttempts) {
-            setTimeout(tryInit, 500);
-        } else {
-            console.error('RSS News Carousel: Failed to load Tiny Slider after', maxAttempts, 'attempts');
-        }
-    }
-    
-    tryInit();
-}
-
 function initCarousel() {
     console.log('RSS News Carousel: Initializing carousel');
     
     // Find carousel containers
-    const carousels = document.querySelectorAll('.rss-news-carousel');
+    const carousels = document.querySelectorAll('.rss-news-carousel-editor');
     console.log('RSS News Carousel: Found', carousels.length, 'carousels');
 
     if (!carousels.length) {
@@ -46,22 +24,19 @@ function initCarousel() {
             }
 
             const config = {
-                container: carousel,
-                items: 1,
-                slideBy: 1,
-                mode: 'carousel',
-                controls: wrapper.dataset.showArrows === 'true',
-                nav: wrapper.dataset.showDots === 'true',
+                dots: wrapper.dataset.showDots !== 'false',
+                arrows: wrapper.dataset.showArrows !== 'false',
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
                 autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayButtonOutput: false,
-                mouseDrag: true,
-                preventScrollOnTouch: 'auto',
-                controlsText: ['❮', '❯']
+                autoplaySpeed: 5000,
+                adaptiveHeight: true
             };
 
             console.log('RSS News Carousel: Initializing with config:', config);
-            const slider = tns(config);
+            $(carousel).slick(config);
             console.log('RSS News Carousel: Carousel', index, 'initialized');
 
         } catch (error) {
@@ -70,12 +45,12 @@ function initCarousel() {
     });
 }
 
-// Try to initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => waitForTinySlider());
-} else {
-    waitForTinySlider();
-}
+// Initialize when DOM is ready
+jQuery(document).ready(function($) {
+    initCarousel();
+});
 
 // Also try on window load as a fallback
-window.addEventListener('load', () => waitForTinySlider()); 
+jQuery(window).on('load', function() {
+    initCarousel();
+}); 

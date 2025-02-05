@@ -25,16 +25,30 @@ function rss_news_carousel_render_callback($attributes) {
         true
     );
 
-    // Get feed URL from attributes
+    // Get attributes
     $feedUrl = isset($attributes['feedUrl']) ? esc_url($attributes['feedUrl']) : '';
     $showDots = isset($attributes['showDots']) ? filter_var($attributes['showDots'], FILTER_VALIDATE_BOOLEAN) : true;
     $showArrows = isset($attributes['showArrows']) ? filter_var($attributes['showArrows'], FILTER_VALIDATE_BOOLEAN) : true;
+    $backgroundColor = isset($attributes['backgroundColor']) ? $attributes['backgroundColor'] : '#f8f9fa';
+    $borderRadius = isset($attributes['borderRadius']) ? intval($attributes['borderRadius']) : 0;
+    $imageRadius = isset($attributes['imageRadius']) ? intval($attributes['imageRadius']) : 0;
+    $paddingTop = isset($attributes['paddingTop']) ? intval($attributes['paddingTop']) : 24;
+    $paddingBottom = isset($attributes['paddingBottom']) ? intval($attributes['paddingBottom']) : 40;
+    $paddingLeft = isset($attributes['paddingLeft']) ? intval($attributes['paddingLeft']) : 24;
+    $paddingRight = isset($attributes['paddingRight']) ? intval($attributes['paddingRight']) : 24;
     
     // Get block wrapper attributes
     $wrapper_attributes = get_block_wrapper_attributes(array(
         'class' => 'wp-block-rss-news-carousel',
         'data-show-dots' => $showDots ? 'true' : 'false',
-        'data-show-arrows' => $showArrows ? 'true' : 'false'
+        'data-show-arrows' => $showArrows ? 'true' : 'false',
+        'data-background-color' => $backgroundColor,
+        'data-border-radius' => $borderRadius,
+        'data-image-radius' => $imageRadius,
+        'data-padding-top' => $paddingTop,
+        'data-padding-bottom' => $paddingBottom,
+        'data-padding-left' => $paddingLeft,
+        'data-padding-right' => $paddingRight
     ));
 
     // If no feed URL, return placeholder
@@ -55,62 +69,69 @@ function rss_news_carousel_render_callback($attributes) {
         );
     }
 
-    // Add initialization script
-    $script = sprintf(
-        'jQuery(document).ready(function($) {
-            $(".rss-news-carousel").slick({
-                dots: %s,
-                arrows: %s,
-                infinite: true,
-                speed: 500,
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 5000,
-                adaptiveHeight: true
-            });
-        });',
-        $showDots ? 'true' : 'false',
-        $showArrows ? 'true' : 'false'
-    );
-    wp_add_inline_script('slick-carousel-js', $script);
-
     // Create carousel HTML
-    $html = '<div class="rss-news-carousel">';
+    $html = '<div class="rss-news-carousel-editor">';
     foreach ($items as $item) {
         $html .= sprintf(
             '<div class="rss-news-item">
-                <a href="%s" class="rss-news-link" target="_blank" rel="noopener noreferrer">
+                <div class="rss-news-link">
                     <div class="rss-news-image-wrapper">
                         %s
                     </div>
                     <div class="rss-news-content">
-                        <div class="rss-news-meta">
-                            <time class="rss-news-date" datetime="%s">%s</time>
-                        </div>
                         <h2 class="rss-news-title">%s</h2>
                         <div class="rss-news-description">%s</div>
                     </div>
-                </a>
+                </div>
             </div>',
-            esc_url($item['link']),
             !empty($item['image_url']) 
                 ? sprintf('<img src="%s" alt="%s" class="rss-news-image" loading="lazy" />', 
                     esc_url($item['image_url']), 
                     esc_attr($item['title'])
                   )
                 : '<div class="rss-news-image-placeholder"></div>',
-            esc_attr($item['date']),
-            esc_html($item['pubDate']),
             esc_html($item['title']),
             wp_kses_post($item['description'])
         );
     }
     $html .= '</div>';
 
+    // Add inline styles
+    $style = sprintf(
+        '<style>
+            .wp-block-rss-news-carousel {
+                background: %s;
+                border-radius: %dpx;
+                overflow: hidden;
+            }
+            .wp-block-rss-news-carousel .rss-news-link {
+                background: %s;
+            }
+            .wp-block-rss-news-carousel .rss-news-content {
+                background: %s;
+                padding: %dpx %dpx %dpx %dpx;
+            }
+            .wp-block-rss-news-carousel .rss-news-image,
+            .wp-block-rss-news-carousel .rss-news-image-placeholder {
+                border-radius: %dpx;
+                overflow: hidden;
+            }
+        </style>',
+        esc_attr($backgroundColor),
+        $borderRadius,
+        esc_attr($backgroundColor),
+        esc_attr($backgroundColor),
+        $paddingTop,
+        $paddingRight,
+        $paddingBottom,
+        $paddingLeft,
+        $imageRadius
+    );
+
     return sprintf(
-        '<div %s>%s</div>',
+        '<div %s>%s%s</div>',
         $wrapper_attributes,
+        $style,
         $html
     );
 } 
