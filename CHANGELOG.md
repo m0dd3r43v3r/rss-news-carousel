@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.8] - 2025-02-03
+
+### Fixed
+- Block attributes not saving properly after refresh
+- Frontend initialization issues with multiple script loads
+- Script dependency and loading order issues
+- Added proper checks for jQuery and Slick availability
+- Improved carousel initialization timing
+- Added fade effect for smoother transitions
+
 ## [1.0.7] - 2025-02-03
 
 ### Fixed

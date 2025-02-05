@@ -4,6 +4,9 @@
  */
 
 function rss_news_carousel_render_callback($attributes) {
+    // Enqueue jQuery first
+    wp_enqueue_script('jquery');
+
     // Enqueue Slick assets
     wp_enqueue_style(
         'slick-carousel-css',
@@ -14,7 +17,7 @@ function rss_news_carousel_render_callback($attributes) {
     wp_enqueue_style(
         'slick-carousel-theme',
         'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css',
-        array(),
+        array('slick-carousel-css'),
         '1.8.1'
     );
     wp_enqueue_script(
@@ -22,6 +25,15 @@ function rss_news_carousel_render_callback($attributes) {
         'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',
         array('jquery'),
         '1.8.1',
+        true
+    );
+
+    // Ensure our frontend script loads after Slick
+    wp_enqueue_script(
+        'rss-news-carousel-frontend',
+        plugins_url('build/frontend.js', dirname(__FILE__)),
+        array('jquery', 'slick-carousel-js'),
+        RSS_NEWS_CAROUSEL_VERSION,
         true
     );
 

@@ -3,7 +3,7 @@
  * Plugin Name: RSS News Carousel
  * Plugin URI: https://github.com/m0dd3r43v3r/rss-news-carousel
  * Description: Display RSS feed items in a beautiful carousel block with images
- * Version: 1.0.7
+ * Version: 1.0.8
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Your Name
@@ -37,7 +37,7 @@ function rss_news_carousel_log_error($message, $error = null) {
 
 // Define plugin constants
 if (!defined('RSS_NEWS_CAROUSEL_VERSION')) {
-    define('RSS_NEWS_CAROUSEL_VERSION', '1.0.7');
+    define('RSS_NEWS_CAROUSEL_VERSION', '1.0.8');
 }
 if (!defined('RSS_NEWS_CAROUSEL_PLUGIN_DIR')) {
     define('RSS_NEWS_CAROUSEL_PLUGIN_DIR', plugin_dir_path(__FILE__));
