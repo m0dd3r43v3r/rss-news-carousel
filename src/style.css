@@ -4,6 +4,12 @@
     overflow: hidden; /* Ensure background respects border radius */
 }
 
+/* Dimensions will be controlled via inline styles through the block settings */
+.wp-block-rss-news-carousel.has-custom-size {
+    width: var(--block-width, 100%);
+    height: var(--block-height, auto);
+}
+
 .rss-news-carousel {
     position: relative;
     padding-bottom: 40px; /* Space for navigation */

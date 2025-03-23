@@ -48,10 +48,19 @@ function rss_news_carousel_render_callback($attributes) {
     $paddingBottom = isset($attributes['paddingBottom']) ? intval($attributes['paddingBottom']) : 40;
     $paddingLeft = isset($attributes['paddingLeft']) ? intval($attributes['paddingLeft']) : 24;
     $paddingRight = isset($attributes['paddingRight']) ? intval($attributes['paddingRight']) : 24;
+    $useCustomSize = isset($attributes['useCustomSize']) ? filter_var($attributes['useCustomSize'], FILTER_VALIDATE_BOOLEAN) : false;
+    $width = isset($attributes['width']) ? $attributes['width'] : '';
+    $height = isset($attributes['height']) ? $attributes['height'] : '';
+    
+    // Set wrapper class with conditional has-custom-size class
+    $wrapper_class = 'wp-block-rss-news-carousel';
+    if ($useCustomSize) {
+        $wrapper_class .= ' has-custom-size';
+    }
     
     // Get block wrapper attributes
     $wrapper_attributes = get_block_wrapper_attributes(array(
-        'class' => 'wp-block-rss-news-carousel',
+        'class' => $wrapper_class,
         'data-show-dots' => $showDots ? 'true' : 'false',
         'data-show-arrows' => $showArrows ? 'true' : 'false',
         'data-background-color' => $backgroundColor,
@@ -60,7 +69,10 @@ function rss_news_carousel_render_callback($attributes) {
         'data-padding-top' => $paddingTop,
         'data-padding-bottom' => $paddingBottom,
         'data-padding-left' => $paddingLeft,
-        'data-padding-right' => $paddingRight
+        'data-padding-right' => $paddingRight,
+        'data-use-custom-size' => $useCustomSize ? 'true' : 'false',
+        'data-width' => $width,
+        'data-height' => $height
     ));
 
     // If no feed URL, return placeholder
@@ -115,6 +127,11 @@ function rss_news_carousel_render_callback($attributes) {
                 background: %s;
                 border-radius: %dpx;
                 overflow: hidden;
+                %s
+            }
+            .wp-block-rss-news-carousel.has-custom-size {
+                --block-width: %s;
+                --block-height: %s;
             }
             .wp-block-rss-news-carousel .rss-news-link {
                 background: %s;
@@ -131,6 +148,9 @@ function rss_news_carousel_render_callback($attributes) {
         </style>',
         esc_attr($backgroundColor),
         $borderRadius,
+        $useCustomSize ? "width: $width; height: $height;" : "",
+        esc_attr($width),
+        esc_attr($height),
         esc_attr($backgroundColor),
         esc_attr($backgroundColor),
         $paddingTop,

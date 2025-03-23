@@ -14,7 +14,8 @@ export default function Edit({ attributes, setAttributes }) {
     const { 
         feedUrl, showDots, showArrows, dotColor, activeDotColor, arrowColor, 
         dotSize, arrowSize, arrowStyle, borderRadius, imageRadius,
-        paddingTop, paddingBottom, paddingLeft, paddingRight, backgroundColor 
+        paddingTop, paddingBottom, paddingLeft, paddingRight, backgroundColor,
+        width, height, useCustomSize
     } = attributes;
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -77,6 +78,8 @@ export default function Edit({ attributes, setAttributes }) {
             border-radius: ${borderRadius}px;
             overflow: hidden;
             padding-bottom: 0; /* Remove bottom padding */
+            ${useCustomSize && width ? `width: ${width};` : ''}
+            ${useCustomSize && height ? `height: ${height};` : ''}
         }
         .wp-block-rss-news-carousel .rss-news-link {
             background: ${backgroundColor};
@@ -264,6 +267,30 @@ export default function Edit({ attributes, setAttributes }) {
                         max={100}
                         step={4}
                     />
+                </PanelBody>
+                <PanelBody title={__('Size Settings', 'rss-news-carousel')}>
+                    <ToggleControl
+                        label={__('Use Custom Size', 'rss-news-carousel')}
+                        checked={useCustomSize}
+                        onChange={(value) => setAttributes({ useCustomSize: value })}
+                        help={__('Enable to set custom width and height for the block', 'rss-news-carousel')}
+                    />
+                    {useCustomSize && (
+                        <>
+                            <TextControl
+                                label={__('Width', 'rss-news-carousel')}
+                                value={width}
+                                onChange={(value) => setAttributes({ width: value })}
+                                help={__('Enter width with units (e.g., 100%, 500px)', 'rss-news-carousel')}
+                            />
+                            <TextControl
+                                label={__('Height', 'rss-news-carousel')}
+                                value={height}
+                                onChange={(value) => setAttributes({ height: value })}
+                                help={__('Enter height with units (e.g., 400px, 50vh)', 'rss-news-carousel')}
+                            />
+                        </>
+                    )}
                 </PanelBody>
             </InspectorControls>
             <style>{customStyles}</style>

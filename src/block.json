@@ -71,6 +71,18 @@
         "backgroundColor": {
             "type": "string",
             "default": "#f8f9fa"
+        },
+        "width": {
+            "type": "string",
+            "default": ""
+        },
+        "height": {
+            "type": "string",
+            "default": ""
+        },
+        "useCustomSize": {
+            "type": "boolean",
+            "default": false
         }
     },
     "supports": {

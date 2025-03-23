@@ -23,6 +23,16 @@ function initCarousel() {
                 return;
             }
 
+            // Apply custom size if enabled
+            if (wrapper.dataset.useCustomSize === 'true') {
+                if (wrapper.dataset.width) {
+                    wrapper.style.width = wrapper.dataset.width;
+                }
+                if (wrapper.dataset.height) {
+                    wrapper.style.height = wrapper.dataset.height;
+                }
+            }
+
             const config = {
                 dots: wrapper.dataset.showDots !== 'false',
                 arrows: wrapper.dataset.showArrows !== 'false',
