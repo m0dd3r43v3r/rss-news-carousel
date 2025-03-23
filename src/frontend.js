@@ -1,5 +1,21 @@
+/**
+ * RSS News Carousel Frontend Script
+ * 
+ * Handles the initialization and management of RSS News Carousel instances
+ * on the frontend of WordPress websites.
+ */
 console.log('RSS News Carousel: Frontend script loaded');
 
+/**
+ * Initialize RSS News Carousels across the page
+ * 
+ * Searches for uninitialized RSS News Carousel elements and configures them
+ * with the Slick Carousel library. Applies all settings from data attributes
+ * including responsive sizes.
+ * 
+ * @since 1.0.0
+ * @return {void}
+ */
 function initCarousel() {
     console.log('RSS News Carousel: Initializing carousel');
     
@@ -33,6 +49,11 @@ function initCarousel() {
                 }
             }
 
+            /**
+             * Build the Slick carousel configuration based on data attributes
+             * 
+             * @type {Object} Configuration object for Slick carousel
+             */
             const config = {
                 dots: wrapper.dataset.showDots !== 'false',
                 arrows: wrapper.dataset.showArrows !== 'false',
@@ -59,6 +80,7 @@ function initCarousel() {
                 return;
             }
 
+            // Initialize the Slick carousel with our configuration
             jQuery(carousel).slick(config);
             console.log('RSS News Carousel: Carousel', index, 'initialized');
 
@@ -68,8 +90,14 @@ function initCarousel() {
     });
 }
 
-// Initialize when DOM is ready
+/**
+ * Set up initialization events to ensure carousels are properly loaded
+ * under various page load conditions.
+ * 
+ * @since 1.0.0
+ */
 if (typeof jQuery !== 'undefined') {
+    // Initialize when DOM is ready
     jQuery(document).ready(function($) {
         // Wait a short moment to ensure all scripts are loaded
         setTimeout(initCarousel, 100);

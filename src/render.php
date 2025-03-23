@@ -49,14 +49,25 @@ function rss_news_carousel_render_callback($attributes) {
     $paddingLeft = isset($attributes['paddingLeft']) ? intval($attributes['paddingLeft']) : 24;
     $paddingRight = isset($attributes['paddingRight']) ? intval($attributes['paddingRight']) : 24;
     $useCustomSize = isset($attributes['useCustomSize']) ? filter_var($attributes['useCustomSize'], FILTER_VALIDATE_BOOLEAN) : false;
+    $useResponsiveSize = isset($attributes['useResponsiveSize']) ? filter_var($attributes['useResponsiveSize'], FILTER_VALIDATE_BOOLEAN) : false;
     $width = isset($attributes['width']) ? $attributes['width'] : '';
     $height = isset($attributes['height']) ? $attributes['height'] : '';
+    $tabletWidth = isset($attributes['tabletWidth']) ? $attributes['tabletWidth'] : '';
+    $tabletHeight = isset($attributes['tabletHeight']) ? $attributes['tabletHeight'] : '';
+    $mobileWidth = isset($attributes['mobileWidth']) ? $attributes['mobileWidth'] : '';
+    $mobileHeight = isset($attributes['mobileHeight']) ? $attributes['mobileHeight'] : '';
     
     // Set wrapper class with conditional has-custom-size class
     $wrapper_class = 'wp-block-rss-news-carousel';
     if ($useCustomSize) {
         $wrapper_class .= ' has-custom-size';
+        if ($useResponsiveSize) {
+            $wrapper_class .= ' has-responsive-size';
+        }
     }
+    
+    // Apply filter to allow developers to modify the wrapper class
+    $wrapper_class = apply_filters('rss_news_carousel_wrapper_class', $wrapper_class, $attributes);
     
     // Get block wrapper attributes
     $wrapper_attributes = get_block_wrapper_attributes(array(
@@ -71,8 +82,13 @@ function rss_news_carousel_render_callback($attributes) {
         'data-padding-left' => $paddingLeft,
         'data-padding-right' => $paddingRight,
         'data-use-custom-size' => $useCustomSize ? 'true' : 'false',
+        'data-use-responsive-size' => $useResponsiveSize ? 'true' : 'false',
         'data-width' => $width,
-        'data-height' => $height
+        'data-height' => $height,
+        'data-tablet-width' => $tabletWidth,
+        'data-tablet-height' => $tabletHeight,
+        'data-mobile-width' => $mobileWidth,
+        'data-mobile-height' => $mobileHeight
     ));
 
     // If no feed URL, return placeholder
@@ -83,8 +99,8 @@ function rss_news_carousel_render_callback($attributes) {
         );
     }
 
-    // Fetch items
-    $items = rss_news_carousel_fetch_items($feedUrl);
+    // Fetch items - Apply filter to allow developers to modify the feed items
+    $items = apply_filters('rss_news_carousel_feed_items', rss_news_carousel_fetch_items($feedUrl), $feedUrl, $attributes);
     
     if (empty($items)) {
         return sprintf(
@@ -120,6 +136,36 @@ function rss_news_carousel_render_callback($attributes) {
     }
     $html .= '</div>';
 
+    // Build responsive CSS
+    $responsive_css = '';
+    if ($useCustomSize && $useResponsiveSize) {
+        // Tablet styles
+        if (!empty($tabletWidth) || !empty($tabletHeight)) {
+            $responsive_css .= '@media (max-width: 991.98px) {';
+            $responsive_css .= '.wp-block-rss-news-carousel.has-responsive-size {';
+            if (!empty($tabletWidth)) {
+                $responsive_css .= sprintf('width: %s !important;', esc_attr($tabletWidth));
+            }
+            if (!empty($tabletHeight)) {
+                $responsive_css .= sprintf('height: %s !important;', esc_attr($tabletHeight));
+            }
+            $responsive_css .= '}}';
+        }
+        
+        // Mobile styles
+        if (!empty($mobileWidth) || !empty($mobileHeight)) {
+            $responsive_css .= '@media (max-width: 767.98px) {';
+            $responsive_css .= '.wp-block-rss-news-carousel.has-responsive-size {';
+            if (!empty($mobileWidth)) {
+                $responsive_css .= sprintf('width: %s !important;', esc_attr($mobileWidth));
+            }
+            if (!empty($mobileHeight)) {
+                $responsive_css .= sprintf('height: %s !important;', esc_attr($mobileHeight));
+            }
+            $responsive_css .= '}}';
+        }
+    }
+
     // Add inline styles
     $style = sprintf(
         '<style>
@@ -145,6 +191,7 @@ function rss_news_carousel_render_callback($attributes) {
                 border-radius: %dpx;
                 overflow: hidden;
             }
+            %s
         </style>',
         esc_attr($backgroundColor),
         $borderRadius,
@@ -157,13 +204,17 @@ function rss_news_carousel_render_callback($attributes) {
         $paddingRight,
         $paddingBottom,
         $paddingLeft,
-        $imageRadius
+        $imageRadius,
+        $responsive_css
     );
 
-    return sprintf(
+    // Allow developers to modify the final HTML output
+    $final_html = apply_filters('rss_news_carousel_render_html', sprintf(
         '<div %s>%s%s</div>',
         $wrapper_attributes,
         $style,
         $html
-    );
+    ), $attributes, $items);
+
+    return $final_html;
 } 

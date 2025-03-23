@@ -18,6 +18,46 @@
  * Release Asset Path: rss-news-carousel-v{version}.zip
  */
 
+/**
+ * RSS News Carousel - WordPress Block Plugin
+ * 
+ * A Gutenberg block for displaying RSS feed items in a visually appealing carousel.
+ * 
+ * = Developer Documentation =
+ * 
+ * This plugin provides several filter hooks that allow developers to extend or modify
+ * its functionality:
+ * 
+ * == Available Filter Hooks ==
+ * 
+ * 1. rss_news_carousel_feed_items
+ *    Allows modification of feed items before they are displayed.
+ *    @param array  $feed_items Array of feed items.
+ *    @param string $feed_url   The URL of the RSS feed.
+ *    @param array  $attributes Block attributes.
+ *    @return array Modified feed items.
+ * 
+ * 2. rss_news_carousel_wrapper_class
+ *    Allows modification of the wrapper class for the carousel.
+ *    @param string $wrapper_class The CSS class for the carousel wrapper.
+ *    @param array  $attributes    Block attributes.
+ *    @return string Modified wrapper class.
+ * 
+ * 3. rss_news_carousel_render_html
+ *    Allows modification of the final HTML output of the carousel.
+ *    @param string $html       The HTML output of the carousel.
+ *    @param array  $attributes Block attributes.
+ *    @param array  $items      Feed items to be displayed.
+ *    @return string Modified HTML output.
+ * 
+ * 4. rss_news_carousel_process_feed_item
+ *    Allows modification of a single feed item during processing.
+ *    @param array  $feed_item  Single feed item data.
+ *    @param object $item       The SimplePie item object.
+ *    @param string $feed_url   The URL of the RSS feed.
+ *    @return array Modified feed item.
+ */
+
 // Prevent direct file access
 if (!defined('ABSPATH')) {
     exit;
@@ -144,7 +184,16 @@ function rss_news_carousel_register_block() {
 }
 add_action('init', 'rss_news_carousel_register_block');
 
-// Simple block render callback
+/**
+ * Render the RSS News Carousel block
+ * 
+ * This function is responsible for rendering the carousel block
+ * on the frontend. It handles script/style enqueuing and HTML generation.
+ * 
+ * @since 1.0.0
+ * @param array $attributes The block attributes.
+ * @return string The HTML output for the block.
+ */
 function rss_news_carousel_render_block($attributes) {
     rss_news_carousel_log_error('Rendering carousel block');
     
@@ -238,7 +287,15 @@ function rss_news_carousel_render_block($attributes) {
     return $output;
 }
 
-// Function to fetch RSS items
+/**
+ * Fetch RSS feed items
+ * 
+ * Retrieves and processes RSS feed items using SimplePie.
+ * 
+ * @since 1.0.0
+ * @param string $feed_url URL of the RSS feed to fetch.
+ * @return array Array of processed feed items.
+ */
 function rss_news_carousel_fetch_items($feed_url) {
     rss_news_carousel_log_error("Fetching RSS feed from: " . $feed_url);
     
@@ -309,6 +366,9 @@ function rss_news_carousel_fetch_items($feed_url) {
                 'image_url' => esc_url($image_url),
                 'pubDate' => $item->get_date('F j, Y')
             );
+            
+            // Allow developers to modify individual feed items
+            $feed_item = apply_filters('rss_news_carousel_process_feed_item', $feed_item, $item, $feed_url);
             
             rss_news_carousel_log_error("Processing item: " . json_encode($feed_item));
             

@@ -44,3 +44,7 @@ phpunit.xml
 .cursorrules
 .cursorignore
 .mdc
+
+update-checker-setup.sh
+/plugin-update-checker
+create-release.ps1

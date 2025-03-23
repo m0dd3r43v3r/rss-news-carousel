@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl, ToggleControl, RangeControl, SelectControl } from '@wordpress/components';
+import { PanelBody, TextControl, ToggleControl, RangeControl, SelectControl, ColorPalette } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -15,7 +15,8 @@ export default function Edit({ attributes, setAttributes }) {
         feedUrl, showDots, showArrows, dotColor, activeDotColor, arrowColor, 
         dotSize, arrowSize, arrowStyle, borderRadius, imageRadius,
         paddingTop, paddingBottom, paddingLeft, paddingRight, backgroundColor,
-        width, height, useCustomSize
+        width, height, useCustomSize, useResponsiveSize, 
+        tabletWidth, tabletHeight, mobileWidth, mobileHeight
     } = attributes;
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -193,32 +194,36 @@ export default function Edit({ attributes, setAttributes }) {
                         ]}
                         onChange={(value) => setAttributes({ arrowStyle: value })}
                     />
-                    <TextControl
-                        label={__('Dot Color', 'rss-news-carousel')}
-                        value={dotColor}
-                        onChange={(value) => setAttributes({ dotColor: value })}
-                        help={__('Enter a hex color code (e.g. #cccccc)', 'rss-news-carousel')}
-                    />
-                    <TextControl
-                        label={__('Active Dot Color', 'rss-news-carousel')}
-                        value={activeDotColor}
-                        onChange={(value) => setAttributes({ activeDotColor: value })}
-                        help={__('Enter a hex color code (e.g. #f8b317)', 'rss-news-carousel')}
-                    />
-                    <TextControl
-                        label={__('Arrow Color', 'rss-news-carousel')}
-                        value={arrowColor}
-                        onChange={(value) => setAttributes({ arrowColor: value })}
-                        help={__('Enter a hex color code (e.g. #1a1a1a)', 'rss-news-carousel')}
-                    />
+                    <div className="rss-carousel-color-control">
+                        <label>{__('Dot Color', 'rss-news-carousel')}</label>
+                        <ColorPalette
+                            value={dotColor}
+                            onChange={(value) => setAttributes({ dotColor: value })}
+                        />
+                    </div>
+                    <div className="rss-carousel-color-control">
+                        <label>{__('Active Dot Color', 'rss-news-carousel')}</label>
+                        <ColorPalette
+                            value={activeDotColor}
+                            onChange={(value) => setAttributes({ activeDotColor: value })}
+                        />
+                    </div>
+                    <div className="rss-carousel-color-control">
+                        <label>{__('Arrow Color', 'rss-news-carousel')}</label>
+                        <ColorPalette
+                            value={arrowColor}
+                            onChange={(value) => setAttributes({ arrowColor: value })}
+                        />
+                    </div>
                 </PanelBody>
                 <PanelBody title={__('Appearance Settings', 'rss-news-carousel')}>
-                    <TextControl
-                        label={__('Background Color', 'rss-news-carousel')}
-                        value={backgroundColor}
-                        onChange={(value) => setAttributes({ backgroundColor: value })}
-                        help={__('Enter a hex color code (e.g. #f8f9fa)', 'rss-news-carousel')}
-                    />
+                    <div className="rss-carousel-color-control">
+                        <label>{__('Background Color', 'rss-news-carousel')}</label>
+                        <ColorPalette
+                            value={backgroundColor}
+                            onChange={(value) => setAttributes({ backgroundColor: value })}
+                        />
+                    </div>
                     <RangeControl
                         label={__('Block Border Radius', 'rss-news-carousel')}
                         value={borderRadius}
@@ -277,18 +282,75 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                     {useCustomSize && (
                         <>
-                            <TextControl
-                                label={__('Width', 'rss-news-carousel')}
-                                value={width}
-                                onChange={(value) => setAttributes({ width: value })}
-                                help={__('Enter width with units (e.g., 100%, 500px)', 'rss-news-carousel')}
+                            <ToggleControl
+                                label={__('Use Responsive Sizes', 'rss-news-carousel')}
+                                checked={useResponsiveSize}
+                                onChange={(value) => setAttributes({ useResponsiveSize: value })}
+                                help={__('Enable to set different sizes for desktop, tablet, and mobile', 'rss-news-carousel')}
                             />
-                            <TextControl
-                                label={__('Height', 'rss-news-carousel')}
-                                value={height}
-                                onChange={(value) => setAttributes({ height: value })}
-                                help={__('Enter height with units (e.g., 400px, 50vh)', 'rss-news-carousel')}
-                            />
+                            
+                            {!useResponsiveSize ? (
+                                // Desktop only controls
+                                <>
+                                    <TextControl
+                                        label={__('Width', 'rss-news-carousel')}
+                                        value={width}
+                                        onChange={(value) => setAttributes({ width: value })}
+                                        help={__('Enter width with units (e.g., 100%, 500px)', 'rss-news-carousel')}
+                                    />
+                                    <TextControl
+                                        label={__('Height', 'rss-news-carousel')}
+                                        value={height}
+                                        onChange={(value) => setAttributes({ height: value })}
+                                        help={__('Enter height with units (e.g., 400px, 50vh)', 'rss-news-carousel')}
+                                    />
+                                </>
+                            ) : (
+                                // Responsive controls
+                                <>
+                                    <h3>{__('Desktop Size', 'rss-news-carousel')}</h3>
+                                    <TextControl
+                                        label={__('Width', 'rss-news-carousel')}
+                                        value={width}
+                                        onChange={(value) => setAttributes({ width: value })}
+                                        help={__('Enter width with units (e.g., 100%, 500px)', 'rss-news-carousel')}
+                                    />
+                                    <TextControl
+                                        label={__('Height', 'rss-news-carousel')}
+                                        value={height}
+                                        onChange={(value) => setAttributes({ height: value })}
+                                        help={__('Enter height with units (e.g., 400px, 50vh)', 'rss-news-carousel')}
+                                    />
+                                    
+                                    <h3>{__('Tablet Size (< 992px)', 'rss-news-carousel')}</h3>
+                                    <TextControl
+                                        label={__('Width', 'rss-news-carousel')}
+                                        value={tabletWidth}
+                                        onChange={(value) => setAttributes({ tabletWidth: value })}
+                                        help={__('Enter width with units (e.g., 100%, 500px)', 'rss-news-carousel')}
+                                    />
+                                    <TextControl
+                                        label={__('Height', 'rss-news-carousel')}
+                                        value={tabletHeight}
+                                        onChange={(value) => setAttributes({ tabletHeight: value })}
+                                        help={__('Enter height with units (e.g., 400px, 50vh)', 'rss-news-carousel')}
+                                    />
+                                    
+                                    <h3>{__('Mobile Size (< 768px)', 'rss-news-carousel')}</h3>
+                                    <TextControl
+                                        label={__('Width', 'rss-news-carousel')}
+                                        value={mobileWidth}
+                                        onChange={(value) => setAttributes({ mobileWidth: value })}
+                                        help={__('Enter width with units (e.g., 100%, 500px)', 'rss-news-carousel')}
+                                    />
+                                    <TextControl
+                                        label={__('Height', 'rss-news-carousel')}
+                                        value={mobileHeight}
+                                        onChange={(value) => setAttributes({ mobileHeight: value })}
+                                        help={__('Enter height with units (e.g., 400px, 50vh)', 'rss-news-carousel')}
+                                    />
+                                </>
+                            )}
                         </>
                     )}
                 </PanelBody>

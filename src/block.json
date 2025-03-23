@@ -80,7 +80,27 @@
             "type": "string",
             "default": ""
         },
+        "tabletWidth": {
+            "type": "string",
+            "default": ""
+        },
+        "tabletHeight": {
+            "type": "string",
+            "default": ""
+        },
+        "mobileWidth": {
+            "type": "string",
+            "default": ""
+        },
+        "mobileHeight": {
+            "type": "string",
+            "default": ""
+        },
         "useCustomSize": {
+            "type": "boolean",
+            "default": false
+        },
+        "useResponsiveSize": {
             "type": "boolean",
             "default": false
         }
