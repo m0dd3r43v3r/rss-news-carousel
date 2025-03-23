@@ -35,3 +35,12 @@ phpunit.xml
 #Release
 *.zip
 *.ps1
+
+# Cursor rules
+.cursorrules
+.cursorignore
+
+# Cursor rules
+.cursorrules
+.cursorignore
+.mdc
